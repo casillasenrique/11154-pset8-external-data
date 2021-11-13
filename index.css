@@ -1,3 +1,5 @@
+/* 8.2 - Setting up styles */
+
 html,
 body {
   background-color: #f1f1f1;
@@ -18,14 +20,11 @@ body {
   display: none;
 }
 
-.x-axis {
-  font-size: 14px;
-}
-
+.x-axis,
 .y-axis {
   font-size: 14px;
 }
 
 .y-axis .tick line {
-  visibility: hidden;
+  display: none;
 }

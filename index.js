@@ -18,20 +18,7 @@ const showBarChart = (data) => {
   const totalCounts = data.map((d) => d.total_count);
   const categories = data.map((d) => d.Name);
 
-  const xScale = d3
-    .scaleLinear()
-    .domain([0, d3.max(totalCounts)])
-    .range([0, width]);
-
-  const yScale = d3
-    .scaleBand()
-    .domain(categories)
-    .range([height, 0])
-    .paddingInner(0.15);
-
-  const xAxis = d3.axisTop(xScale).ticks(6);
-  const yAxis = d3.axisLeft(yScale);
-
+  // 8.3.1 - Set up chart
   const svg = d3
     .select('#bar-chart')
     .append('svg')
@@ -42,7 +29,24 @@ const showBarChart = (data) => {
       height + marginTop + marginBottom,
     ]);
 
-  // Bars
+  // 8.3.2 - Setting up x-axis
+  const xScale = d3
+    .scaleLinear()
+    .domain([0, d3.max(totalCounts)])
+    .range([0, width]);
+
+  const xAxis = d3.axisTop(xScale).ticks(6);
+
+  // 8.3.3 - Setting up y-axis
+  const yScale = d3
+    .scaleBand()
+    .domain(categories)
+    .range([height, 0])
+    .paddingInner(0.15);
+
+  const yAxis = d3.axisLeft(yScale);
+
+  // 8.3.4 - Bars
   svg
     .append('g')
     .selectAll('rect')
@@ -54,6 +58,8 @@ const showBarChart = (data) => {
     .attr('fill', barColor)
     .attr('width', (d) => xScale(d.total_count))
     .attr('height', yScale.bandwidth())
+
+    // 8.4 - Display tooltip on hover
     .on('mouseover', (event, d) => {
       console.log('mouse entered');
       d3.select('#tooltip')
@@ -69,19 +75,19 @@ const showBarChart = (data) => {
         .style('left', event.pageX + 15 + 'px')
         .style('top', event.pageY + 'px');
     })
-    .on('mouseout', function (d) {
+    .on('mouseout', () => {
       console.log('mouse left');
       d3.select('#tooltip').classed('hidden', true);
     });
 
-  // x-axis
+  // Add the x-axis
   svg
     .append('g')
     .attr('class', 'x-axis')
     .attr('transform', `translate(${marginLeft}, ${marginTop})`)
     .call(xAxis);
 
-  // y-axis
+  // Add the y-axis
   svg
     .append('g')
     .attr('class', 'y-axis')
@@ -89,6 +95,7 @@ const showBarChart = (data) => {
     .call(yAxis);
 };
 
+// Load data from CSV and show the bar chart
 d3.csv('boston_311.csv', d3.autoType)
   .then((data) => {
     console.log(data);
