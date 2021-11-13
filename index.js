@@ -7,9 +7,6 @@ const marginBottom = 30;
 
 const barColor = '#ffb752';
 
-const barHeight = 10;
-const barSpacing = 5;
-
 const commaFormat = d3.format(',');
 
 const showBarChart = (data) => {
